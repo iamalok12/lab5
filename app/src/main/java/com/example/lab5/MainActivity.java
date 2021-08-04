@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     TextView lblCounter;
-    Button btnStart, btnStop,btnReset;
+    Button btnStart, btnStop,btn5sec,btn10sec,btn15sec;
     int counter = 0;
     boolean running = false;
+    int last=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,10 +24,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         lblCounter = (TextView) findViewById(R.id.textView);
         btnStart = (Button) findViewById(R.id.buttonstart);
-        btnReset=(Button)findViewById(R.id.button_reset);
         btnStop = (Button) findViewById(R.id.buttonstop);
+        btn5sec = (Button) findViewById(R.id.sec5);
+        btn10sec = (Button) findViewById(R.id.sec10);
+        btn15sec = (Button) findViewById(R.id.sec15);
         btnStop.setOnClickListener(this);
         btnStart.setOnClickListener(this);
+        btn5sec.setOnClickListener(this);
+        btn10sec.setOnClickListener(this);
+        btn15sec.setOnClickListener(this);
     }
 
     public void onClick(View v) {
@@ -34,13 +40,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             counter = 0;
             running = true;
             new MyCounter().start();
-        } else if (v.equals(btnStop)) {
-            running = false;
         }
-        else if(v.equals(btnReset)){
-            counter=0;
-            running=false;
-            handler.sendEmptyMessage();
+        else if(v.equals(btn5sec)){
+            btn15sec.setSelected(false);
+            btn10sec.setSelected(false);
+            last=5;
+        }
+        else if(v.equals(btn10sec)){
+            btn5sec.setSelected(false);
+            btn15sec.setSelected(false);
+            last=10;
+        }
+        else if(v.equals(btn15sec)){
+            btn5sec.setSelected(false);
+            btn10sec.setSelected(false);
+            last=15;
+        }
+        else if (v.equals(btnStop)) {
+            running = false;
         }
     }
     Handler handler = new Handler()
@@ -54,15 +71,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         public void run()
         {
-            while (running)
+            while (running&&counter<last)
             {
                 counter++;
                 handler.sendEmptyMessage(counter);
                 try {
                     Thread.sleep(1000);
-                    }
-                        catch (Exception e) {}
-                    }
                 }
+                catch (Exception e) {}
             }
+        }
+    }
 }
