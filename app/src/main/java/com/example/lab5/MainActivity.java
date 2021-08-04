@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     TextView lblCounter;
-    Button btnStart, btnStop;
+    Button btnStart, btnStop,btnReset;
     int counter = 0;
     boolean running = false;
 
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         lblCounter = (TextView) findViewById(R.id.textView);
         btnStart = (Button) findViewById(R.id.buttonstart);
+        btnReset=(Button)findViewById(R.id.button_reset);
         btnStop = (Button) findViewById(R.id.buttonstop);
         btnStop.setOnClickListener(this);
         btnStart.setOnClickListener(this);
@@ -35,6 +36,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new MyCounter().start();
         } else if (v.equals(btnStop)) {
             running = false;
+        }
+        else if(v.equals(btnReset)){
+            counter=0;
+            running=false;
+            handler.sendEmptyMessage();
         }
     }
     Handler handler = new Handler()
